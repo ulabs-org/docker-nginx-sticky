@@ -1,12 +1,12 @@
 # About this Repo
 
-This is the Git repo of the Docker image for [nginx-sticky](https://registry.hub.docker.com/_/im-kulikov/nginx-sticky/).
+This is the Git repo of the Docker image for [nginx-sticky](https://hub.docker.com/r/imkulikov/nginx-sticky/).
 
 ## About nginx build:
 
-This is simple and slim image (**≈8mb**) with buildin [nginx-sticky-module-ng](https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng/overview)
+This is simple and slim image (**≈8mb**) with builtin [nginx-sticky-module-ng](https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng/overview)
 
-Nginx buildin with:
+Nginx build with:
 - http_realip_module
 - http_addition_module
 - http_sub_module
