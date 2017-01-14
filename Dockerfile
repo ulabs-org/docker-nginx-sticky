@@ -1,4 +1,4 @@
-FROM alpine:3.4
+FROM alpine:3.5
 
 MAINTAINER Evgeniy Kulikov "im@kulikov.im"
 
@@ -45,8 +45,8 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 		linux-headers \
 		curl \
 		gnupg \
-    openssl \
-    openssl-dev \
+    libressl \
+    libressl-dev \
     unzip \
   && curl -sfSL https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng/get/$STICKY_VERSION.zip -o sticky.zip \
 	&& curl -sfSL http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz -o nginx.tar.gz \
@@ -57,6 +57,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& rm -r "$GNUPGHOME" nginx.tar.gz.asc \
 	&& mkdir -p /usr/src \
   && unzip -j sticky.zip -d /usr/src/nginx-sticky-module \
+	# @TODO: check if sources change location "/usr/include/openssl"
   && sed -i '/#include <ngx_sha1.h>/a#include <openssl/md5.h>' /usr/src/nginx-sticky-module/ngx_http_sticky_misc.c \
   && sed -i '/#include <ngx_sha1.h>/a#include <openssl/sha.h>' /usr/src/nginx-sticky-module/ngx_http_sticky_misc.c \
   && cat /usr/src/nginx-sticky-module/ngx_http_sticky_misc.c | head -n 15 \
@@ -100,6 +101,13 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& apk del .build-deps \
 	&& apk del .gettext \
 	&& mv /tmp/envsubst /usr/local/bin/ \
+	\
+	# Clean caches and temp-files:
+	&& rm -rf /var/cache/apk 2> /dev/null || echo "OK" \
+	&& rm -rf /tmp/* 2> /dev/null || echo "OK" \
+	&& rm -rf /tmp/.* 2> /dev/null || echo "OK" \
+	&& rm -rf /root/* 2> /dev/null || echo "OK" \
+	&& rm -rf /root/.* 2> /dev/null || echo "OK" \
 	\
 	# forward request and error logs to docker log collector
 	&& ln -sf /dev/stdout /var/log/nginx/access.log \
