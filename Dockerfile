@@ -3,7 +3,7 @@ FROM alpine:3.4
 MAINTAINER Evgeniy Kulikov "im@kulikov.im"
 
 ENV NGINX_VERSION 1.11.8
-ENV STICKY_URL https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng/get/08a395c66e42.zip
+ENV STICKY_VERSION 1.2.6
 
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& CONFIG="\
@@ -48,7 +48,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
     openssl \
     openssl-dev \
     unzip \
-  && curl -sfSL $STICKY_URL -o sticky.zip \
+  && curl -sfSL https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng/get/$STICKY_VERSION.zip -o sticky.zip \
 	&& curl -sfSL http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz -o nginx.tar.gz \
 	&& curl -sfSL http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz.asc  -o nginx.tar.gz.asc \
 	&& export GNUPGHOME="$(mktemp -d)" \
