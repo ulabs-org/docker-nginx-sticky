@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: docker build -t imkulikov/nginx-sticky .
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build

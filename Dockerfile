@@ -1,8 +1,8 @@
-FROM alpine:3.5
+FROM alpine:3.7
 
 MAINTAINER Evgeniy Kulikov "im@kulikov.im"
 
-ENV NGINX_VERSION 1.11.8
+ENV NGINX_VERSION 1.13.7
 ENV STICKY_VERSION 1.2.6
 
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
@@ -42,7 +42,6 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
     pcre \
 		pcre-dev \
 		zlib-dev \
-		linux-headers \
 		curl \
 		gnupg \
     libressl \
@@ -78,9 +77,9 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& install -m644 html/50x.html /usr/share/nginx/html/ \
 	&& install -m755 objs/nginx-debug /usr/sbin/nginx-debug \
 	&& ln -s ../../usr/lib/nginx/modules /etc/nginx/modules \
-	&& strip /usr/sbin/nginx* \
-	&& strip /usr/lib/nginx/modules/*.so || echo "no modules" \
-  && strip /usr/lib/nginx/addons/*.so  || echo "no addons" \
+	&& (strip /usr/sbin/nginx* || exit 2) \
+	&& (strip /usr/lib/nginx/modules/*.so || echo "no modules") \
+  && (strip /usr/lib/nginx/addons/*.so  || echo "no addons") \
 	&& rm -rf /usr/src/nginx-$NGINX_VERSION \
 	\
 	# Bring in gettext so we can get `envsubst`, then throw
@@ -110,6 +109,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& rm -rf /root/.* 2> /dev/null || echo "OK" \
 	\
 	# forward request and error logs to docker log collector
+	&& mkdir -p /var/log/nginx \
 	&& ln -sf /dev/stdout /var/log/nginx/access.log \
 	&& ln -sf /dev/stderr /var/log/nginx/error.log
 
