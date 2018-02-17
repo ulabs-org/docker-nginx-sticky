@@ -4,7 +4,7 @@ This is the Git repo of the Docker image for [nginx-sticky](https://hub.docker.c
 
 ## About nginx build:
 
-This is simple and slim image (**≈8mb**) with builtin [nginx-sticky-module-ng](https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng/overview)
+This is simple and slim image (**≈8mb**) with builtin [nginx-sticky-module-ng](https://github.com/ulabs-org/nginx-sticky-module-ng)
 
 Nginx build with:
 - http_realip_module
